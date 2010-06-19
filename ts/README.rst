@@ -24,9 +24,9 @@ From inside *ts1/src* or *ts2/src* directory, type::
 
  erl -pa ../ebin +K true +A 42 +B -run ts_app start
 
-To change parameters (*module, timeout or port*), use::
+To change parameters (*module, timeout or port*), use (**-ts <parameter> <value>**)::
 
- erl -pa ../ebin +K true +A 42 +B -run ts_app start **-ts <parameter> <value>**
+ erl -pa ../ebin +K true +A 42 +B -run ts_app start -ts <parameter> <value>
 
 
  
