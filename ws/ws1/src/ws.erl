@@ -13,6 +13,7 @@
          terminate/2, code_change/3]).
 
 -define(SERVER, ?MODULE).
+-define(CONTENT_TYPE, "plain/text; charset=ISO-8859-1").
 
 
 stop() ->
@@ -27,15 +28,15 @@ init([]) ->
     {ok, Port} = application:get_env(?APP, port),
     {ok, Bind} = application:get_env(?APP, bind),
     {ok, Name} = application:get_env(?APP, name),
-	{ok, SRoot} = application:get_env(?APP, server_root),
-	{ok, DRoot} = application:get_env(?APP, document_root),
+    {ok, SRoot} = application:get_env(?APP, server_root),
+    {ok, DRoot} = application:get_env(?APP, document_root),
 
     Config = [{port, Port},
-             {server_root, SRoot},
-             {document_root, DRoot},
-             {bind_address, Bind},
-             {server_name, Name},
-             {modules, Modules}],
+              {server_root, SRoot},
+              {document_root, DRoot},
+              {bind_address, Bind},
+              {server_name, Name},
+              {modules, Modules}],
 
     {ok, _} = inets:start(httpd, Config, stand_alone),
 
@@ -63,13 +64,11 @@ code_change(_OldVsn, State, _Extra) ->
     {ok, State}.
 
 
-%% NewData = [{response,{StatusCode,Body}}] 
-%%        | [{response,{response,Head,Body}}] 
-%%        | [{response,{already_sent,Statuscode,Size}}] 
-%% Head = [HeaderOption] 
-%% HeaderOption = {Option, Value} | {code, StatusCode} 
-
 do(ModData) ->
     Data = ModData#mod.entity_body,
-	Content = io_lib:fwrite("<html><body><pre>~p</pre></body>~n", [{ModData, Data}]),
-    {proceed, [{response, {200, Content}}]}.
+    Body = lists:flatten(io_lib:fwrite("WS (data received):~n~p~n",
+                                       [{ModData, Data}])),
+    Head = [{content_length, integer_to_list(length(Body))},
+            {content_type, ?CONTENT_TYPE},
+            {code, 200}],
+    {proceed, [{response, {response, Head, Body}}]}.
