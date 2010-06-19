@@ -20,7 +20,3 @@ Author
 ------
 Ivan Ribeiro Rocha <ivan.ribeiro@gmail.com> 
 
-Documentation
--------------
-in progress... please be patient...
-
