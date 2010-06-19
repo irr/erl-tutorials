@@ -14,6 +14,7 @@ Projects
 --------
 - ts/ts1 (basic tcp server)
 - ts/ts2 (basic tcp server using prim_inet:async_accept [based on thrift_server.erl])
+- ws/ws1 (inets web service)
 
 Author
 ------
