@@ -53,8 +53,8 @@ Generating *boot scripts* from inside **ts1/src** or **ts2/src** directory::
  1> systools:make_script("ts_rel-1.0", [local]).
  ok
 
-* **local** is an option that means that the directories where the applications are found are used in the *boot script*, instead of $ROOT/lib.
-* **$ROOT** is the root directory of the installed release.)
+* **local** is an option that means that the directories where the applications are found are used in the *boot script*, instead of $ROOT/lib
+* **$ROOT** is the root directory of the installed release
 
 If you want to make a **release package**, type::
 
