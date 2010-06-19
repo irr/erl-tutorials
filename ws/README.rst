@@ -20,11 +20,11 @@ Testing
 
 From inside **ws1/src** directory, type::
 
- erl -pa ../ebin +K true +A 42 +B -run ws_app start
+ erl -pa ../ebin +K true +A 42 +B -s inets start -run ws_app start
 
 To change parameters (*module, timeout or port*), use (**-ws <parameter> <value>**)::
 
- erl -pa ../ebin +K true +A 42 +B -run ws_app start -ws <parameter> <value>
+ erl -pa ../ebin +K true +A 42 +B -s inets start -run ws_app start -ws <parameter> <value>
 
 Valid parameters can be checked inside **ws1/ebin/ws.app**, see bellow::
 
@@ -33,16 +33,61 @@ Valid parameters can be checked inside **ws1/ebin/ws.app**, see bellow::
    {vsn, "1.0"},
    {modules, [ws_app, ws_sup, ws]},
    {registered, [ws]},
-   {applications, [kernel, stdlib]},
+   {applications, [kernel, stdlib, inets]},
    {mod, {ws_app, []}},
    {env, [{modules, [ws]}, {port, 1972}, {timeout, infinity}, 
           {bind, {127,0,0,1}}, {name, "ws1"},
           {server_root, "/tmp"}, {document_root, "/tmp"}]}
   ]}.
 
+Making a request::
+
+ [irocha@napoleon ~]$ curl -v http://localhost:1972/ -d "data=ale%20&%20ivan";echo
+ * About to connect() to localhost port 1972 (#0)
+ *   Trying 127.0.0.1... connected
+ * Connected to localhost (127.0.0.1) port 1972 (#0)
+ > POST / HTTP/1.1
+ > User-Agent: curl/7.20.1 (x86_64-redhat-linux-gnu) libcurl/7.20.1 NSS/3.12.6.2 zlib/1.2.3 libidn/1.16 libssh2/1.2.4
+ > Host: localhost:1972
+ > Accept: */*
+ > Content-Length: 19
+ > Content-Type: application/x-www-form-urlencoded
+ > 
+ < HTTP/1.1 200 OK
+ < Server: inets/5.3
+ < Date: Sat, 19 Jun 2010 20:44:54 GMT
+ < Content-Length: 544
+ < Content-Type: plain/text; charset=ISO-8859-1
+ < 
+ WS (data received):
+ {{mod,{init_data,{51378,"127.0.0.1"},"napoleon"},
+       [],ip_comm,#Port<0.1095>,httpd_conf__127_0_0_1__1972,"POST",
+       "localhost:1972/","/","HTTP/1.1","POST / HTTP/1.1",
+       [{"content-type","application/x-www-form-urlencoded"},
+        {"content-length","19"},
+        {"accept","*/*"},
+        {"host","localhost:1972"},
+        {"user-agent",
+         "curl/7.20.1 (x86_64-redhat-linux-gnu) libcurl/7.20.1 NSS/3.12.6.2 zlib/1.2.3 libidn/1.16 libssh2/1.2.4"}],
+       "data=ale%20&%20ivan",true},
+  "data=ale%20&%20ivan"}
+ * Connection #0 to host localhost left intact
+ * Closing connection #0
+
 ========
 Releases
 ========
+
+Rel file::
+
+ {release,
+  {"ws_rel", "A"},
+  {erts, "5.8"},
+  [{kernel, "2.14"},
+   {stdlib, "1.17"},
+   {inets, "5.3"},
+   {ws, "1.0"}]
+ }.
 
 Generating *boot scripts* from inside **ws1/src** directory::
 
