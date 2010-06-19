@@ -10,6 +10,11 @@ Dependencies
 ------------
 - Erlang/OTP
 
+Projects
+--------
+- ts/ts1 (basic tcp server)
+- ts/ts2 (basic tcp server using prim_inet:async_accept [based on thrift_server.erl])
+
 Author
 ------
 Ivan Ribeiro Rocha <ivan.ribeiro@gmail.com> 
