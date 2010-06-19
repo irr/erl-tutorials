@@ -16,4 +16,20 @@ Author
 ------
 Ivan Ribeiro Rocha <ivan.ribeiro@gmail.com> 
 
+=======
+Testing
+=======
+
+From inside src directory::
+
+ erl -pz ../ebin +K true +A 42 +B -run ts_app start
+
+To change parameters (module, timeout or port), use::
+
+ erl -pz ../ebin +K true +A 42 +B -run ts_app start -ts <parameter> <value>
+
+
+ 
+
+
 
