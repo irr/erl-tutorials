@@ -73,7 +73,7 @@ Generated files::
  ts_rel-1.0.script
  ts_rel-1.0.tar.gz (make_tar)
 
-Executing **ts** *boot script*::
+Executing **ts1** *boot script*::
 
  [irocha@napoleon src (master)]$ erl +K true +A 42 +B -boot ts_rel-1.0
  Erlang R14A (erts-5.8) [source] [64-bit] [smp:2:2] [rq:2] [async-threads:42] [hipe] [kernel-poll:true]
