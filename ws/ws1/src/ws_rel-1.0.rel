@@ -1,0 +1,7 @@
+{release,
+ {"ws_rel", "A"},
+ {erts, "5.8"},
+ [{kernel, "2.14"},
+  {stdlib, "1.17"},
+  {ws, "1.0"}]
+}.
