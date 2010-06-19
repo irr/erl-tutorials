@@ -1,10 +1,10 @@
 =============
-erl-Tutorials
+erl-tutorials
 =============
 
 About
 -----
-erl-Tutorials is a set of sample codes whose main purpose is to teach and guide various aspects of erlang programming... 
+erl-tutorials is a set of sample codes whose main purpose is to teach and guide various aspects of erlang programming... 
 
 Dependencies
 ------------
