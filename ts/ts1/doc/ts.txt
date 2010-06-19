@@ -1,0 +1,8 @@
+run:
+erl -pz ../ebin +K true +A 42 +B -run ts_app start -ts port 1972
+
+release:
+systools:make_script("ts_rel-1.0", [local]).
+
+run-release:
+erl -boot ts_rel-1.0
