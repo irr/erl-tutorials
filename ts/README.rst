@@ -44,6 +44,16 @@ Valid parameters can be checked inside **ts?/ebin/ts.app**, see bellow::
 Releases
 ========
 
+Rel file::
+
+ {release,
+  {"ts_rel", "A"},
+  {erts, "5.8"},
+  [{kernel, "2.14"},
+   {stdlib, "1.17"},
+   {ts, "1.0"}]
+ }.
+
 Generating *boot scripts* from inside **ts1/src** or **ts2/src** directory::
 
  [irocha@napoleon src (master)]$ erl -pa ../ebin +K true +A 42 +B
