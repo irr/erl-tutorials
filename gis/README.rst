@@ -4,7 +4,7 @@ GIS Server
 
 About
 -----
-* Creating dynamic gen_servers adding and removing childs
+* Creating dynamic **gen_servers** and *gen_fsms* adding and removing childs
 
 Dependencies
 ------------
