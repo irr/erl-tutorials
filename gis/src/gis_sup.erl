@@ -4,7 +4,7 @@
 
 -behaviour(supervisor).
 
--export([start_link/0, init/1, child_spec/1, add_child/1, remove_child/1]).
+-export([start_link/0, init/1, child_spec/1, child_spec/3, add_child/1, remove_child/1]).
 
 start_link() ->
     supervisor:start_link({local, ?MODULE}, ?MODULE, [gis]).
@@ -20,12 +20,16 @@ init([Id]) ->
 
 
 child_spec(Id) ->
+	child_spec(Id, gis, gis).
+
+
+child_spec(Id, App, Mod) ->
     Restart = permanent,
     Shutdown = 2000,
     Type = worker,
 
-    {Id, {gis, start_link, [Id]},
-     Restart, Shutdown, Type, [gis]}.
+    {Id, {App, start_link, [Id]},
+     Restart, Shutdown, Type, [Mod]}.
 
 
 add_child(Id) ->

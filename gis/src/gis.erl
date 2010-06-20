@@ -4,12 +4,12 @@
 
 -behaviour(gen_server).
 
--export([start_link/0, start_link/1, stop/1, test/2, init/1,
+-export([start_link/0, start_link/1, stop/0, test/2, init/1,
          handle_call/3, handle_cast/2, handle_info/2,
          terminate/2, code_change/3]).
 
-stop(Id) ->
-    gen_server:cast(Id, stop).
+stop() ->
+    gen_server:cast(gis, stop).
 
 test(Id, X) ->
 	gen_server:call(Id, {test, X}).
@@ -19,19 +19,21 @@ start_link() ->
 	start_link(gis).
 
 start_link(Id) ->
-    gen_server:start_link({local, Id}, ?MODULE, [], []).
+    gen_server:start_link({local, Id}, ?MODULE, [Id], []).
 
-init([]) ->
-	State = {self()},
-    io:format("GIS started ~p...~n", [State]),
+init([Id]) ->
+	Name = list_to_atom(atom_to_list(Id) ++ "_fsm"),
+	{ok, Pid} = gis_fsm:start_link(Name),
+	State = {gen, self(), fsm, Pid},
+    io:format("GIS started ~p (~p)...~n", [Name, State]),
     {ok, State}.
 
 
-handle_call({test, X}, _From, State) ->
+handle_call({test, X}, _From, State) when is_integer(X) ->
 	io:format("test called: ~p~n", [{State}]),
-    {reply, {ok, X}, State};
+    {reply, {ok, X}, {State, X}};
 handle_call(_Request, _From, State) ->
-    {noreply, State}.
+    {reply, {error, invalid_number}, State}.
 
 handle_cast(stop, State) ->
 	io:format("stop called: ~p~n", [{State}]),
