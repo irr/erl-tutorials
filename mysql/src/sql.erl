@@ -14,7 +14,8 @@ exec(Sql) ->
     exec(sql, Sql).
 
 exec(Id, Sql) ->
-    gen_server:call(Id, {exec, Sql}).
+    {ok, Timeout} = application:get_env(sql, timeout),
+    gen_server:call(Id, {exec, Sql}, Timeout).
 
 start_link() ->
     start_link(gis).
@@ -49,18 +50,25 @@ init([Id]) ->
     io:format("SQL started ~p (~p)...~n", [Id, State]),
     {ok, State}.
 
-handle_call({exec, Sql}, _From, _State) ->
-    Result = case mysql:transaction(mysql, fun() -> mysql:fetch(mysql, Sql) end) of
-                 {atomic, {data, #mysql_result{rows=[]}}} ->
-                     {ok, []};
-                 {atomic, {data, #mysql_result{rows=Rows}}} ->
-                     {ok, Rows};
-                 {atomic, {updated, #mysql_result{affectedrows=N}}} ->
-                     {ok, N};
-                 {aborted, {Reason, {rollback_result, _Result}}} ->
-                     {error, Reason}
-             end,
-    {reply, Result, _State};
+handle_call({exec, Sql}, From, State) ->
+    {ok, Timeout} = application:get_env(sql, timeout),
+    spawn(fun() ->
+                  Result = case mysql:transaction(mysql,
+                                                  fun() ->
+                                                          mysql:fetch(mysql, Sql, Timeout)
+                                                  end,
+                                                  Timeout) of
+                               {atomic, {data, #mysql_result{rows=[]}}} ->
+                                   {ok, []};
+                               {atomic, {data, #mysql_result{rows=Rows}}} ->
+                                   {ok, Rows};
+                               {atomic, {updated, #mysql_result{affectedrows=N}}} ->
+                                   {ok, N};
+                               {aborted, {Reason, {rollback_result, _Result}}} ->
+                                   {error, Reason}
+                           end,
+                  gen_server:reply(From, Result) end),
+    {noreply, State};
 
 handle_call(_Request, _From, State) ->
     {reply, {error, invalid_call}, State}.

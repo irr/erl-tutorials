@@ -8,6 +8,7 @@
   {mod, {sql_app, []}},
   {env, [{host, "localhost"}, {port, 3306}, {size, 5},
          {user, "irr"}, {password, "mysql"}, 
-         {database, "test"}, {encoding, latin1}]}
+         {database, "test"}, {encoding, latin1},
+         {timeout, 10000}]}
  ]}.
 
