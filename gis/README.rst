@@ -71,7 +71,6 @@ Testing *supervisor* killing **gis1** (supervisor **must** create a replacement)
 
  ** Registered procs on node nonode@nohost **
  Name                  Pid          Initial Call                      Reds Msgs
- application_controlle <0.7.0>      erlang:apply/2                    3186    0
  ...
  gis                   <0.38.0>     gis:init/1                          69    0
  gis1                  <0.47.0>     gis:init/1                          40    0
