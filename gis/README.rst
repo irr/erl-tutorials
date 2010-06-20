@@ -62,7 +62,7 @@ Calling **gis** and **gis1**::
  test called: {{<0.42.0>}}
  {ok,1}
 
-Testing *supervisor* killing **gis1** (supervisor **must** create a replacement)::
+Testing *supervisor* monitoring **gis1** (supervisor **must** create a replacement)::
 
  6> exit(whereis(gis1), kill).
  true
