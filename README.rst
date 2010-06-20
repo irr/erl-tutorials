@@ -25,6 +25,11 @@ GIS
 ---
 * `gis <https://github.com/irr/erl-tutorials/tree/master/gis>`_ (**gen_server** and **gen_fsm** *README*)
 
+
+MySQL
+---
+* `mysql <https://github.com/irr/erl-tutorials/tree/master/mysql>`_ (MySQL client **gen_server** *README*)
+
 Dependencies
 ------------
 - Erlang/OTP
