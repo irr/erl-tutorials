@@ -12,9 +12,9 @@ Dependencies
 
 Projects
 --------
-- ts/ts1 (basic tcp server)
-- ts/ts2 (basic tcp server using prim_inet:async_accept [based on thrift_server.erl])
-- ws/ws1 (inets web service)
+- `ts <https://github.com/irr/erl-tutorials/tree/master/ts/>`/`ts1 https://github.com/irr/erl-tutorials/tree/master/ts/ts1/` (basic tcp server)
+- `ts https://github.com/irr/erl-tutorials/tree/master/ts/`/`ts2 https://github.com/irr/erl-tutorials/tree/master/ts/ts1/` (basic tcp server using prim_inet:async_accept [based on thrift_server.erl])
+- `ws https://github.com/irr/erl-tutorials/tree/master/ws/`/`ws1 https://github.com/irr/erl-tutorials/tree/master/ws/ws1` (inets web service)
 
 Author
 ------
