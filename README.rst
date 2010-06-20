@@ -4,11 +4,7 @@ erl-tutorials
 
 About
 -----
-erl-tutorials is a set of sample codes whose main purpose is to teach and guide various aspects of erlang programming... 
-
-Dependencies
-------------
-- Erlang/OTP
+**erl-tutorials** is a set of sample codes whose main purpose is to teach and guide various aspects of *erlang programming*... 
 
 ========
 Projects
@@ -28,6 +24,10 @@ WS
 GIS
 ---
 * `gis <https://github.com/irr/erl-tutorials/tree/master/gis>`_ (**gen_server** and **gen_fsm** *README*)
+
+Dependencies
+------------
+- Erlang/OTP
 
 Author
 ------
