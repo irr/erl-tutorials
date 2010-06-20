@@ -34,6 +34,7 @@ middle({initial}, _From, State) ->
 
 handle_event(stop, _StateName, StateData) ->
     {stop, normal, StateData};
+
 handle_event(_Event, StateName, State) ->
     {next_state, StateName, State}.
 
