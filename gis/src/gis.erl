@@ -11,7 +11,6 @@
 test(Id, X) ->
 	gen_server:call(Id, {test, X}).
 
-
 start_link() ->
 	start_link(gis).
 
@@ -25,15 +24,14 @@ init([Id]) ->
     io:format("GIS started ~p (~p)...~n", [Name, State]),
     {ok, State}.
 
-
 handle_call({test, X}, _From, State) when is_integer(X) ->
 	io:format("test called: ~p~n", [{State}]),
     {reply, {ok, X}, {State, X}};
+
 handle_call(_Request, _From, State) ->
     {reply, {error, invalid_number}, State}.
 
 handle_cast(stop, State) ->
-	io:format("stop called: ~p~n", [{State}]),
     {stop, normal, State};
 
 handle_cast(_Msg, State) ->

@@ -15,7 +15,7 @@ Author
 Ivan Ribeiro Rocha <ivan.ribeiro@gmail.com> 
 
 =======
-Testing
+Running
 =======
 
 From inside **gis/src** directory, type::
@@ -92,4 +92,55 @@ Shutting down the whole **application** with all childs::
      type: temporary
  ok
 
+
+Managing childs with **start_child** and **stop_child**::
+
+ [irocha@napoleon src (master)]$ erl -make && erl -pa ../ebin +K true +A 42 +B -run gis_app start 
+ Erlang R14A (erts-5.8) [source] [64-bit] [smp:2:2] [rq:2] [async-threads:42] [hipe] [kernel-poll:true]
+
+ Eshell V5.8  (abort with ^G)
+ GIS started gis_fsm ({gen,<0.38.0>,fsm,<0.39.0>})...
+ 1> regs().
+
+ ** Registered procs on node nonode@nohost **
+ Name                  Pid          Initial Call                      Reds Msgs
+ ...
+ gis                   <0.38.0>     gis:init/1                          95    0
+ gis_fsm               <0.39.0>     gis_fsm:init/1                      19    0
+ gis_sup               <0.37.0>     supervisor:gis_sup/1               109    0
+ ...
+
+ 2> gis_sup:start_child(gis1).
+ GIS started gis1_fsm ({gen,<0.43.0>,fsm,<0.44.0>})...
+ {ok,<0.43.0>}
+ 3> gis_sup:start_child(gis2).
+ GIS started gis2_fsm ({gen,<0.46.0>,fsm,<0.47.0>})...
+ {ok,<0.46.0>}
+
+ 4> regs().
+
+ ** Registered procs on node nonode@nohost **
+ Name                  Pid          Initial Call                      Reds Msgs
+ ...
+ gis                   <0.38.0>     gis:init/1                          95    0
+ gis1                  <0.43.0>     gis:init/1                          68    0
+ gis1_fsm              <0.44.0>     gis_fsm:init/1                      19    0
+ gis2                  <0.46.0>     gis:init/1                          68    0
+ gis2_fsm              <0.47.0>     gis_fsm:init/1                      19    0
+ gis_fsm               <0.39.0>     gis_fsm:init/1                      19    0
+ gis_sup               <0.37.0>     supervisor:gis_sup/1               235    0
+
+ 5> gis_sup:stop_child(gis2).
+ ok
+ 6> regs().
+
+ ** Registered procs on node nonode@nohost **
+ Name                  Pid          Initial Call                      Reds Msgs
+ ...
+ gis                   <0.38.0>     gis:init/1                          95    0
+ gis1                  <0.43.0>     gis:init/1                          68    0
+ gis1_fsm              <0.44.0>     gis_fsm:init/1                      19    0
+ gis_fsm               <0.39.0>     gis_fsm:init/1                      19    0
+ gis_sup               <0.37.0>     supervisor:gis_sup/1               265    0
+ ...
 
