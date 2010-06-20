@@ -67,7 +67,8 @@ handle_call({exec, Sql}, From, State) ->
                                {aborted, {Reason, {rollback_result, _Result}}} ->
                                    {error, Reason}
                            end,
-                  gen_server:reply(From, Result) end),
+                  gen_server:reply(From, Result)
+          end),
     {noreply, State};
 
 handle_call(_Request, _From, State) ->
