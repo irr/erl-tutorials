@@ -58,8 +58,6 @@ handle_call({exec, Sql}, From, State) ->
                                                           mysql:fetch(mysql, Sql, Timeout)
                                                   end,
                                                   Timeout) of
-                               {atomic, {data, #mysql_result{rows=[]}}} ->
-                                   {ok, []};
                                {atomic, {data, #mysql_result{rows=Rows}}} ->
                                    {ok, Rows};
                                {atomic, {updated, #mysql_result{affectedrows=N}}} ->
