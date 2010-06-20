@@ -27,7 +27,7 @@ GIS
 
 
 MySQL
----
+-----
 * `mysql <https://github.com/irr/erl-tutorials/tree/master/mysql>`_ (MySQL client **gen_server** *README*)
 
 Dependencies
