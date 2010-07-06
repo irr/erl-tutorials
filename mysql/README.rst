@@ -34,6 +34,16 @@ Database *setup*::
  USE test;
  CREATE TABLE test(k VARCHAR(64) NOT NULL, d VARCHAR(256) NOT NULL, PRIMARY KEY(k)) ENGINE=INNODB;
 
+Generating encrypted password
+-----------------------------
+
+Start *erlang shell* with **erl -pa ../ebin -s crypto start** and type::
+
+ 1> crypt64:encode("mysql").
+ {ok,"K4eaaKsdEY+K4yzsGK2UwZWmhPSV8k1em2xR7gtab+qnNif4cJ9bX7E+/HXR5tgm5S+/4jLlx4GKWr7fKBJr6w=="}
+ 2> crypt64:decode("K4eaaKsdEY+K4yzsGK2UwZWmhPSV8k1em2xR7gtab+qnNif4cJ9bX7E+/HXR5tgm5S+/4jLlx4GKWr7fKBJr6w==").
+ {ok,"mysql"}
+
 =======
 Running
 =======
