@@ -37,7 +37,7 @@ encode(P) when is_list(P) ->
 
 decode(S) when is_list(S) ->
     C = ?CRYPT64_CTRL,
-	L = binary_to_list(crypto:aes_cbc_128_decrypt(C#crypt64.k, C#crypt64.v, base64:decode(S))),
+    L = binary_to_list(crypto:aes_cbc_128_decrypt(C#crypt64.k, C#crypt64.v, base64:decode(S))),
     [R | _] = string:tokens(L, ?CRYPT64_INVALID),
-	{ok, R}.
+    {ok, R}.
 
