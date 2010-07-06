@@ -24,11 +24,14 @@ start_link(Id) ->
     gen_server:start_link({local, Id}, ?MODULE, [Id], []).
 
 init([Id]) ->
+	crypto:start(),
+
     {ok, Host} = application:get_env(sql, host),
     {ok, Port} = application:get_env(sql, port),
     {ok, Size} = application:get_env(sql, size),
     {ok, User} = application:get_env(sql, user),
-    {ok, Password} = application:get_env(sql, password),
+    {ok, Password64} = application:get_env(sql, password),
+	{ok, Password} = crypt64:decode(Password64),
     {ok, Database} = application:get_env(sql, database),
     {ok, Encoding} = application:get_env(sql, encoding),
 

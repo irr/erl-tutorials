@@ -49,7 +49,7 @@ From inside **sql/src** directory, type::
                            {user,"irr"},
                            {included_applications,[]},
                            {encoding,latin1},
-                           {password,"mysql"},
+                           {password,"hstDm8gkoVelffvnzuy8l0nllutL1IOacFE6iNPbfnAX94C2pWMt9g1bIabFTiIpLRmwqKW4RfUvEuHuafR82Q=="},
                            {port,3306},
                            {size,5},
                            {database,"test"}]}})...
