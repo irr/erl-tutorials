@@ -34,7 +34,7 @@ Database *setup*::
  USE test;
  CREATE TABLE test(k VARCHAR(64) NOT NULL, d VARCHAR(256) NOT NULL, PRIMARY KEY(k)) ENGINE=INNODB;
 
-Generating encrypted password
+Generating (*and testing*) encrypted password
 -----------------------------
 
 Start *erlang shell* with **erl -pa ../ebin -s crypto start** and type::
