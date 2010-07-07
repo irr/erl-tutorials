@@ -79,7 +79,7 @@ From inside **cdrv/src** directory, type::
  f called: {{gen,<0.38.0>,port,{ok,test}},2}
  {ok,1}
 
-Verifying test port driver, using::
+Verifying *test port driver*::
  2> regs().
 
  ** Registered procs on node nonode@nohost **
