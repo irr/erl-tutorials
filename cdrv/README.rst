@@ -19,7 +19,7 @@ Ivan Ribeiro Rocha <ivan.ribeiro@gmail.com>
 Setup
 =====
 
-Verify *erlang include directory* inside **priv/Makefile**:
+Verify *erlang include directory* inside **priv/Makefile**::
 
  [irocha@napoleon cdrv (master)]$ cat priv/Makefile 
  GCC=gcc
