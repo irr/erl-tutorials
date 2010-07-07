@@ -15,17 +15,19 @@ start(SharedLib) ->
 init(ok, SharedLib) ->
     init(SharedLib);
 init({error, already_loaded}, SharedLib) ->
-    init(SharedLib);
+    {ok, ?REG};
 init(_, _) ->
     exit({error, could_not_load_driver}).
 
 init(SharedLib) ->
     register(?REG,
-             spawn(fun() ->
-                           loop(open_port({spawn, SharedLib}, []))
-                   end)).
+             spawn_link(fun() ->
+                                loop(open_port({spawn, SharedLib}, []))
+                        end)),
+    {ok, ?REG}.
+
 stop() ->
-    test ! stop.
+    ?REG ! stop.
 
 f(X) ->
     R = call_port({f, X}),

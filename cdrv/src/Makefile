@@ -4,7 +4,7 @@ INCLUDE = ../include
 
 OUTPUT = ../ebin
 
-MODULES = test
+MODULES = test cdrv_app cdrv_sup cdrv
 
 all: compile
 
