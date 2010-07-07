@@ -14,7 +14,7 @@ start(SharedLib) ->
 
 init(ok, SharedLib) ->
     init(SharedLib);
-init({error, already_loaded}, SharedLib) ->
+init({error, already_loaded}, _) ->
     {ok, ?REG};
 init(_, _) ->
     exit({error, could_not_load_driver}).
