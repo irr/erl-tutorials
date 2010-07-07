@@ -30,6 +30,11 @@ MySQL
 -----
 * `mysql <https://github.com/irr/erl-tutorials/tree/master/mysql>`_ (MySQL client **gen_server** *README*)
 
+
+Port Driver
+-----------
+* `cdrv <https://github.com/irr/erl-tutorials/tree/master/cdrv>`_ (C Port Driver **gen_server** *README*)
+
 Dependencies
 ------------
 - Erlang/OTP
