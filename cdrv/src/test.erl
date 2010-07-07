@@ -47,7 +47,7 @@ loop(Port) ->
             Port ! {self(), {command, encode(Msg)}},
             receive
                 {Port, {data, Data}} ->
-                    Caller ! {test, decode(Data)}
+                    Caller ! {?REG, decode(Data)}
             end,
             loop(Port);
         stop ->
