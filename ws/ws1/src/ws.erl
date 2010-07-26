@@ -4,7 +4,7 @@
 
 -behaviour(gen_server).
 
--include_lib("inets/src/httpd.hrl").
+-include_lib("inets/src/http_server/httpd.hrl").
 
 -include("ws.hrl").
 
