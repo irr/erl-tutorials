@@ -35,6 +35,10 @@ Port Driver
 -----------
 * `cdrv <https://github.com/irr/erl-tutorials/tree/master/cdrv>`_ (C Port Driver **gen_server** *README*)
 
+Trader
+------
+* `et <https://github.com/irr/erl-tutorials/tree/master/et>`_ (Trader **gen_server** *README*)
+
 Dependencies
 ------------
 - Erlang/OTP
