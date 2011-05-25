@@ -9,7 +9,7 @@
 -export([start_link/0, stop/0, init/1,
          handle_call/3, handle_cast/2, handle_info/2,
          terminate/2, code_change/3,
-         load/1, sma/1, ema/1]).
+         source/1, load/1, sma/1, ema/1]).
 
 -define(SERVER, ?MODULE).
 
@@ -36,6 +36,10 @@ timeout() ->
 %% =======================
 
 -spec load (list()) -> {ok, integer()}.
+
+source(File) when is_list(File) ->
+    gen_server:call(?SERVER, {source, File}).
+
 load(Symbol) when is_list(Symbol) ->
     gen_server:call(?SERVER, {load, Symbol}, timeout()).
 
@@ -49,15 +53,30 @@ ema(N) ->
 
 %% =======================
 
+state(S) ->
+    Size = case S#etrs.data of
+               undefined ->
+                   0;
+               A ->
+                   array:size(A)
+           end,
+    io:format("State: {csv=~p, timeout=~p, limit=~p, data(size)=~p~n",
+              [S#etrs.csv, S#etrs.timeout, S#etrs.limit, Size]),
+    S.
 
 handle_call({load, Symbol}, _From, State) ->
     {ok, A} = etrader_csv:read(State#etrs.csv, Symbol, State#etrs.limit),
-    NewState = #etrs{csv = State#etrs.csv, data = A},
-    {reply, {ok, array:size(A)}, NewState};
+    NewState = State#etrs{data = A},
+    {reply, {ok, array:size(A)}, state(NewState)};
 
 handle_call({ma, N, F}, _From, State) ->
-    {reply, {ok, apply(F, [State#etrs.data, N])}, State};
+    state(State),
+    {reply, {ok, apply(F, [State#etrs.data, N])}, state(State)};
 
+handle_call({source, File}, _From, State) ->
+    application:set_env(?APP, csv, File),
+    NewState = State#etrs{csv = File},
+    {reply, ok, state(NewState)};
 
 handle_call(_Request, _From, State) ->
     {noreply, State}.
