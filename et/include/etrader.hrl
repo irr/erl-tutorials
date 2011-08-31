@@ -1,3 +1,4 @@
+-define(TEST, true).
 -define(APP, etrader).
 
 -record(etrs, {csv, timeout, limit = 0, data = undefined}).

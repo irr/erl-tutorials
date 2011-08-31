@@ -1,4 +1,6 @@
-{ '*', [debug_info,
-	{ i, "../include" },
-	{ outdir, "../ebin" }
-]}.
+{ '*', 
+	[verbose, debug_info,
+		{ i, "../include" }, 
+		{ outdir, "../ebin" }
+	]
+}.

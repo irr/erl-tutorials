@@ -5,7 +5,10 @@
 -behaviour(gen_server).
 
 -include("etrader.hrl").
+
+-ifdef(TEST).
 -include_lib("eunit/include/eunit.hrl").
+-endif.
 
 -export([start_link/0, stop/0, init/1,
          handle_call/3, handle_cast/2, handle_info/2,
@@ -112,6 +115,7 @@ code_change(_OldVsn, State, _Extra) ->
     {ok, State}.
 
 
+-ifdef(TEST).
 %% erl -make && erl -pa ../ebin +K true +A 42 +B -run etrader_app start -etrader limit 100
 %% ps.: limit MUST BE 100 to pass tests!
 ma_test() ->
@@ -122,3 +126,4 @@ ma_test() ->
     {ok, SMA} = sma(21),
     {ok, [SMA_TEST]} = file:consult(?TEST_SMA21),
     ?assertEqual(SMA, SMA_TEST).
+-endif.
