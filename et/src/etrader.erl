@@ -5,10 +5,11 @@
 -behaviour(gen_server).
 
 -include("etrader.hrl").
+-include_lib("eunit/include/eunit.hrl").
 
 -export([start_link/0, stop/0, init/1,
          handle_call/3, handle_cast/2, handle_info/2,
-         terminate/2, code_change/3, unconsult/1,
+         terminate/2, code_change/3, unconsult/2, dump/1,
          source/1, load/1, sma/1, ema/1]).
 
 -define(SERVER, ?MODULE).
@@ -53,8 +54,14 @@ ema(N) ->
 
 %% =======================
 
-unconsult(File) ->
-	gen_server:call(?SERVER, {unconsult, File}, timeout()).
+unconsult(File, Data) ->
+    {ok, S} = file:open(File, write),
+    io:format(S, "~p.~n", [Data]),
+    ok = file:close(S),
+    {ok, Data}.
+
+dump(File) ->
+    gen_server:call(?SERVER, {dump, File}, timeout()).
 
 state(S) ->
     Size = case S#etrs.data of
@@ -81,12 +88,10 @@ handle_call({source, File}, _From, State) ->
     NewState = State#etrs{csv = File},
     {reply, ok, state(NewState)};
 
-handle_call({unconsult, File}, _From, State) ->
-	Data = State#etrs.data,
-	{ok, S} = file:open(File, write),
-	io:format(S, "~p.~n" ,[Data]),
-	file:close(S),
-	{reply, {ok, Data}, State}; 
+handle_call({dump, File}, _From, State) ->
+    Data = State#etrs.data,
+    {ok, _} = unconsult(File, Data),
+    {reply, {ok, Data}, State};
 
 handle_call(_Request, _From, State) ->
     {noreply, State}.
@@ -105,3 +110,15 @@ terminate(_Reason, _State) ->
 
 code_change(_OldVsn, State, _Extra) ->
     {ok, State}.
+
+
+%% erl -make && erl -pa ../ebin +K true +A 42 +B -run etrader_app start -etrader limit 100
+%% ps.: limit MUST BE 100 to pass tests!
+ma_test() ->
+    load(?TEST_SYMBOL),
+    {ok, EMA} = ema(21),
+    {ok, [EMA_TEST]} = file:consult(?TEST_EMA21),
+    ?assertEqual(EMA, EMA_TEST),
+    {ok, SMA} = sma(21),
+    {ok, [SMA_TEST]} = file:consult(?TEST_SMA21),
+    ?assertEqual(SMA, SMA_TEST).
