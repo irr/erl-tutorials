@@ -66,30 +66,18 @@ unconsult(File, Data) ->
 dump(File) ->
     gen_server:call(?SERVER, {dump, File}, timeout()).
 
-state(S) ->
-    Size = case S#etrs.data of
-               undefined ->
-                   0;
-               A ->
-                   array:size(A)
-           end,
-    io:format("State: {csv=~p, timeout=~p, limit=~p, data(size)=~p~n",
-              [S#etrs.csv, S#etrs.timeout, S#etrs.limit, Size]),
-    S.
-
 handle_call({load, Symbol}, _From, State) ->
     {ok, A} = etrader_csv:read(State#etrs.csv, Symbol, State#etrs.limit),
     NewState = State#etrs{data = A},
-    {reply, {ok, array:size(A)}, state(NewState)};
+    {reply, {ok, array:size(A)}, NewState};
 
 handle_call({ma, N, F}, _From, State) ->
-    state(State),
-    {reply, {ok, apply(F, [State#etrs.data, N])}, state(State)};
+    {reply, {ok, apply(F, [State#etrs.data, N])}, State};
 
 handle_call({source, File}, _From, State) ->
     application:set_env(?APP, csv, File),
     NewState = State#etrs{csv = File},
-    {reply, ok, state(NewState)};
+    {reply, ok, NewState};
 
 handle_call({dump, File}, _From, State) ->
     Data = State#etrs.data,
