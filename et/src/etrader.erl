@@ -8,7 +8,7 @@
 
 -export([start_link/0, stop/0, init/1,
          handle_call/3, handle_cast/2, handle_info/2,
-         terminate/2, code_change/3,
+         terminate/2, code_change/3, unconsult/1,
          source/1, load/1, sma/1, ema/1]).
 
 -define(SERVER, ?MODULE).
@@ -53,6 +53,9 @@ ema(N) ->
 
 %% =======================
 
+unconsult(File) ->
+	gen_server:call(?SERVER, {unconsult, File}, timeout()).
+
 state(S) ->
     Size = case S#etrs.data of
                undefined ->
@@ -77,6 +80,13 @@ handle_call({source, File}, _From, State) ->
     application:set_env(?APP, csv, File),
     NewState = State#etrs{csv = File},
     {reply, ok, state(NewState)};
+
+handle_call({unconsult, File}, _From, State) ->
+	Data = State#etrs.data,
+	{ok, S} = file:open(File, write),
+	io:format(S, "~p.~n" ,[Data]),
+	file:close(S),
+	{reply, {ok, Data}, State}; 
 
 handle_call(_Request, _From, State) ->
     {noreply, State}.

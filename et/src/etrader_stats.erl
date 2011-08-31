@@ -8,6 +8,9 @@
 -type ma_t() :: {queue(), array()}.
 
 -include("etrader.hrl").
+-include_lib("eunit/include/eunit.hrl").
+
+-define(DATA, "../priv/test.dat").
 
 %% R:
 %% library(quantmod)
@@ -70,4 +73,21 @@ sma(A, N) ->
 -spec ema (array(), integer()) -> ma_t().
 ema(A, N) ->
     ma(array:size(A), A, N, 0, {queue:new(), array:new(array:size(A))}, fun em/4).
+
+%% erl -make && erl -pa ../ebin +K true +A 42 +B -run etrader_app start -etrader limit 10
+%% ps.: limit MUST BE 10 to pass tests!
+ma_test() ->
+	{ok, [A]} = file:consult(?DATA),
+	EMA = ema(A, 3),
+	?assert(array:to_list(EMA) =:= [undefined, undefined, 
+									20.216089999999998, 20.06671, 20.265885,
+									20.1911925, 20.17376625, 20.145133125, 19.7075765625,
+									19.66307328125]),
+	SMA = sma(A, 3),
+	?assert(array:to_list(SMA) =:= [undefined, undefined,
+									20.216089999999998, 19.88413333333333, 20.166296666666664, 
+									20.166296666666668, 20.245966666666664, 20.12978, 19.847620000000003, 
+									19.668363333333332]).
+		
+	
 
