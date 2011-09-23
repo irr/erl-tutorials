@@ -18,6 +18,8 @@
 %% uol <- read.csv(file="/data/bovespa/etrader.csv", header=FALSE)
 %% EMA(uol[[5]][1:100], n=21)
 
+%% dialyzer -Wno_opaque -c ../ebin/*.beam
+
 -spec mm (integer(), integer(), integer(), ma_t()) -> ma_t().
 mm(I, N, N, {Q, MA}) when is_integer(I),
                           is_integer(N),
@@ -67,11 +69,11 @@ ma(L, A, N, I, {Q, MA}, F) when is_integer(L),
     NewQ = queue:in(Val, Q),
     ma(L, A, N, I + 1, F(I, N, queue:len(NewQ), {NewQ, MA}), F).
 
--spec sma (array(), integer()) -> ma_t().
+-spec sma (array(), integer()) -> array().
 sma(A, N) ->
     ma(array:size(A), A, N, 0, {queue:new(), array:new(array:size(A))}, fun mm/4).
 
--spec ema (array(), integer()) -> ma_t().
+-spec ema (array(), integer()) -> array().
 ema(A, N) ->
     ma(array:size(A), A, N, 0, {queue:new(), array:new(array:size(A))}, fun em/4).
 
