@@ -80,6 +80,13 @@ ema(A, N) ->
 -ifdef(TEST).
 %% erl -make && erl -pa ../ebin +K true +A 42 +B -run etrader_app start -etrader limit 100
 %% ps.: limit MUST BE 100 to pass tests!
+%% 1> etrader_stats:test().
+%%   Test passed.
+%% ok
+%% 2> eunit:test({inparallel, etrader_stats}).     
+%%   Test passed.
+%% ok
+
 ma_test() ->
     {ok, [DATA]} = file:consult(?TEST_DATA),
     EMA = ema(DATA, 21),
