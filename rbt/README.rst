@@ -124,9 +124,9 @@ Executing **rbt**::
  Test ok!
  ok
 
-Manual start::
+Manual start with **shell**::
 
- [irocha@york rbt (master)]$ ./rebar clean && ./rebar compile && erl -pa ebin +K true +A 42 +B -s inets start -s rbt_app start
+ [irocha@york rbt (master)]$ erl -pa ebin +K true +A 42 +B -s inets start -s rbt_app start
  ==> rel (clean)
  ==> rbt (clean)
  ==> rel (compile)
