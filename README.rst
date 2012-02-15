@@ -39,6 +39,10 @@ Trader
 ------
 * `et <https://github.com/irr/erl-tutorials/tree/master/et>`_ (Trader **gen_server** *README*)
 
+RBT
+------
+* `rbt <https://github.com/irr/erl-tutorials/tree/master/rbt>`_ (RBT **rebar** *README*)
+
 Dependencies
 ------------
 - Erlang/OTP
