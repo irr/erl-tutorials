@@ -123,3 +123,20 @@ Executing **rbt**::
  (rbt@127.0.0.1)1> rbt_server:test().
  Test ok!
  ok
+
+ Manual start:
+
+ [irocha@york rbt (master)]$ ./rebar clean && ./rebar compile && erl -pa ebin +K true +A 42 +B -s inets start -s rbt_app start
+ ==> rel (clean)
+ ==> rbt (clean)
+ ==> rel (compile)
+ ==> rbt (compile)
+ Compiled src/rbt_sup.erl
+ Compiled src/rbt_app.erl
+ Compiled src/rbt_server.erl
+ Erlang R14B04 (erts-5.8.5) [source] [64-bit] [smp:4:4] [rq:4] [async-threads:42] [hipe] [kernel-poll:true]
+
+ Eshell V5.8.5  (abort with ^G)
+ 1> rbt_server:test().
+ Test ok!
+ ok
