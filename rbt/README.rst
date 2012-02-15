@@ -74,7 +74,7 @@ Patching **rel/reltool.config**::
            {copy, "files/vm.args", "releases/\{\{rel_vsn\}\}/vm.args"}
           ]}.
 
-Verifying **erts** parameters::
+Verifying **erts** parameters (**rel/files/vm.args**)::
 
  ## Name of the node
  -name rbt@127.0.0.1
