@@ -115,28 +115,67 @@ From inside **rbt** root directory, type::
 Executing **rbt**::
 
  [irocha@york rbt (master)]$ rel/rbt/bin/rbt console
- Exec: /home/irocha/git/erl-tutorials/rbt/rel/rbt/erts-5.8.5/bin/erlexec -boot /home/irocha/git/erl-tutorials/rbt/rel/rbt/releases/1/rbt -mode embedded -config /home/irocha/git/erl-tutorials/rbt/rel/rbt/releases/1/sys.config -args_file /home/irocha/git/erl-tutorials/rbt/rel/rbt/releases/1/vm.args -- console
- Root: /home/irocha/git/erl-tutorials/rbt/rel/rbt
+ Exec: /home/irocha/erl-tutorials/rbt/rel/rbt/erts-5.8.5/bin/erlexec -boot /home/irocha/erl-tutorials/rbt/rel/rbt/releases/1/rbt -mode embedded -config /home/irocha/erl-tutorials/rbt/rel/rbt/releases/1/sys.config -args_file /home/irocha/erl-tutorials/rbt/rel/rbt/releases/1/vm.args -- console
+ Root: /home/irocha/erl-tutorials/rbt/rel/rbt
  Erlang R14B04 (erts-5.8.5) [source] [64-bit] [smp:4:4] [rq:4] [async-threads:42] [hipe] [kernel-poll:true]
 
+ RBT started [{port,1972},
+              {server_root,"/tmp"},
+              {document_root,"/tmp"},
+              {bind_address,{127,0,0,1}},
+              {server_name,"rbt"},
+              {modules,[rbt_server]}]...
  Eshell V5.8.5  (abort with ^G)
- (rbt@127.0.0.1)1> rbt_server:test().
- Test ok!
- ok
+ (rbt@127.0.0.1)1> 
+
+ [irocha@york rbt (master)]$ curl -v http://localhost:1972/ -d "data=ale%20&%20ivan";echo
+ * About to connect() to localhost port 1972 (#0)
+ *   Trying 127.0.0.1... connected
+ * Connected to localhost (127.0.0.1) port 1972 (#0)
+ > POST / HTTP/1.1
+ > User-Agent: curl/7.21.7 (x86_64-redhat-linux-gnu) libcurl/7.21.7 NSS/3.13.1.0 zlib/1.2.5 libidn/1.22 libssh2/1.2.7
+ > Host: localhost:1972
+ > Accept: */*
+ > Content-Length: 19
+ > Content-Type: application/x-www-form-urlencoded
+ > 
+ < HTTP/1.1 200 OK
+ < Server: inets/5.7.1
+ < Date: Wed, 15 Feb 2012 16:26:44 GMT
+ < Content-Length: 686
+ < Content-Type: plain/text; charset=ISO-8859-1
+ < 
+ RBT (data received):
+ {{mod,{init_data,{49072,"127.0.0.1"},"york"},
+      [],ip_comm,#Port<0.1018>,httpd_conf__127_0_0_1__1972,"POST",
+      "localhost:1972/","/","HTTP/1.1","POST / HTTP/1.1",
+      [{"content-type","application/x-www-form-urlencoded"},
+       {"content-length","19"},
+       {"accept","*/*"},
+       {"host","localhost:1972"},
+       {"user-agent",
+        "curl/7.21.7 (x86_64-redhat-linux-gnu) libcurl/7.21.7 NSS/3.13.1.0 zlib/1.2.5 libidn/1.22 libssh2/1.2.7"}],
+      "data=ale%20&%20ivan",true},
+ "data=ale%20&%20ivan",
+ [{port,1972},
+  {server_root,"/tmp"},
+  {document_root,"/tmp"},
+  {bind_address,{127,0,0,1}},
+  {server_name,"rbt"},
+  {modules,[rbt_server]}]}
+ * Connection #0 to host localhost left intact
+ * Closing connection #0
 
 Manual start with **shell**::
 
  [irocha@york rbt (master)]$ erl -pa ebin +K true +A 42 +B -s inets start -s rbt_app start
- ==> rel (clean)
- ==> rbt (clean)
- ==> rel (compile)
- ==> rbt (compile)
- Compiled src/rbt_sup.erl
- Compiled src/rbt_app.erl
- Compiled src/rbt_server.erl
  Erlang R14B04 (erts-5.8.5) [source] [64-bit] [smp:4:4] [rq:4] [async-threads:42] [hipe] [kernel-poll:true]
 
  Eshell V5.8.5  (abort with ^G)
- 1> rbt_server:test().
- Test ok!
- ok
+ 1> RBT started [{port,1972},
+                 {server_root,"/tmp"},
+                 {document_root,"/tmp"},
+                 {bind_address,{127,0,0,1}},
+                 {server_name,"rbt"},
+                 {modules,[rbt_server]}]...
+

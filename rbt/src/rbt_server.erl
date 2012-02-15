@@ -2,16 +2,17 @@
 
 -behaviour(gen_server).
 
+-include_lib("inets/src/http_server/httpd.hrl").
+
 %% API
 -export([start_link/0]).
 
 %% gen_server callbacks
--export([init/1, test/0, handle_call/3, handle_cast/2, handle_info/2,
-		 terminate/2, code_change/3]).
+-export([init/1, handle_call/3, handle_cast/2, handle_info/2,
+         terminate/2, code_change/3, do/1, state/0]).
 
--define(SERVER, ?MODULE). 
-
--record(state, {}).
+-define(SERVER, ?MODULE).
+-define(CONTENT_TYPE, "plain/text; charset=ISO-8859-1").
 
 %%%===================================================================
 %%% API
@@ -25,7 +26,7 @@
 %% @end
 %%--------------------------------------------------------------------
 start_link() ->
-	gen_server:start_link({local, ?SERVER}, ?MODULE, [], []).
+    gen_server:start_link({local, ?SERVER}, ?MODULE, [], []).
 
 %%%===================================================================
 %%% gen_server callbacks
@@ -43,10 +44,18 @@ start_link() ->
 %% @end
 %%--------------------------------------------------------------------
 init([]) ->
-	{ok, #state{}}.
+    Config = [{port, 1972},
+              {server_root, "/tmp"},
+              {document_root, "/tmp"},
+              {bind_address, {127,0,0,1}},
+              {server_name, "rbt"},
+              {modules, [rbt_server]}],
+    {ok, _} = inets:start(httpd, Config, stand_alone),
+    io:format("RBT started ~p...~n", [Config]),
+    {ok, Config}.
 
-test() ->
-	gen_server:call(?MODULE, test).
+state() ->
+    gen_server:call(?MODULE, state).
 
 %%--------------------------------------------------------------------
 %% @private
@@ -62,13 +71,12 @@ test() ->
 %%                                   {stop, Reason, State}
 %% @end
 %%--------------------------------------------------------------------
-handle_call(test, _From, State) ->
-	io:format("Test ok!~n"),
-	{reply, ok, State};
+handle_call(state, _From, State) ->
+    {reply, State, State};
 
 handle_call(_Request, _From, State) ->
-	Reply = ok,
-	{reply, Reply, State}.
+    Reply = ok,
+    {reply, Reply, State}.
 
 %%--------------------------------------------------------------------
 %% @private
@@ -81,7 +89,7 @@ handle_call(_Request, _From, State) ->
 %% @end
 %%--------------------------------------------------------------------
 handle_cast(_Msg, State) ->
-	{noreply, State}.
+    {noreply, State}.
 
 %%--------------------------------------------------------------------
 %% @private
@@ -94,7 +102,7 @@ handle_cast(_Msg, State) ->
 %% @end
 %%--------------------------------------------------------------------
 handle_info(_Info, State) ->
-	{noreply, State}.
+    {noreply, State}.
 
 %%--------------------------------------------------------------------
 %% @private
@@ -108,7 +116,7 @@ handle_info(_Info, State) ->
 %% @end
 %%--------------------------------------------------------------------
 terminate(_Reason, _State) ->
-	ok.
+    ok.
 
 %%--------------------------------------------------------------------
 %% @private
@@ -119,8 +127,17 @@ terminate(_Reason, _State) ->
 %% @end
 %%--------------------------------------------------------------------
 code_change(_OldVsn, State, _Extra) ->
-	{ok, State}.
+    {ok, State}.
 
 %%%===================================================================
 %%% Internal functions
 %%%===================================================================
+
+do(ModData) ->
+    Data = ModData#mod.entity_body,
+    Body = lists:flatten(io_lib:fwrite("RBT (data received):~n~p~n",
+                                       [{ModData, Data, state()}])),
+    Head = [{content_length, integer_to_list(length(Body))},
+            {content_type, ?CONTENT_TYPE},
+            {code, 200}],
+    {proceed, [{response, {response, Head, Body}}]}.
