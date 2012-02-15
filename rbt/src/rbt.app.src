@@ -1,0 +1,12 @@
+{application, rbt,
+ [
+  {description, ""},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {mod, { rbt_app, []}},
+  {env, []}
+ ]}.
