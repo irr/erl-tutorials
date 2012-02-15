@@ -74,6 +74,28 @@ Patching **rel/reltool.config**::
            {copy, "files/vm.args", "releases/\{\{rel_vsn\}\}/vm.args"}
           ]}.
 
+Verifying **erts** parameters::
+
+ ## Name of the node
+ -name rbt@127.0.0.1
+
+ ## Cookie for distributed erlang
+ -setcookie rbt
+
+ ## Heartbeat management; auto-restarts VM if it dies or becomes unresponsive
+ ## (Disabled by default..use with caution!)
+ ##-heart
+
+ ## Enable kernel poll and a few async threads
+ +K true
+ +A 42
+
+ ## Increase number of concurrent ports/sockets
+ -env ERL_MAX_PORTS 4096
+
+ ## Tweak GC to run more often
+ -env ERL_FULLSWEEP_AFTER 10
+
 =======
 Testing
 =======
@@ -95,7 +117,7 @@ Executing **rbt**::
  [irocha@york rbt (master)]$ rel/rbt/bin/rbt console
  Exec: /home/irocha/git/erl-tutorials/rbt/rel/rbt/erts-5.8.5/bin/erlexec -boot /home/irocha/git/erl-tutorials/rbt/rel/rbt/releases/1/rbt -mode embedded -config /home/irocha/git/erl-tutorials/rbt/rel/rbt/releases/1/sys.config -args_file /home/irocha/git/erl-tutorials/rbt/rel/rbt/releases/1/vm.args -- console
  Root: /home/irocha/git/erl-tutorials/rbt/rel/rbt
- Erlang R14B04 (erts-5.8.5) [source] [64-bit] [smp:4:4] [rq:4] [async-threads:0] [hipe] [kernel-poll:false]
+ Erlang R14B04 (erts-5.8.5) [source] [64-bit] [smp:4:4] [rq:4] [async-threads:42] [hipe] [kernel-poll:true]
 
  Eshell V5.8.5  (abort with ^G)
  (rbt@127.0.0.1)1> rbt_server:test().
