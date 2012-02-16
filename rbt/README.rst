@@ -32,6 +32,7 @@ Creating node::
 Patching **rel/reltool.config**::
 
 *change*::
+
  ...
        {lib_dirs, ["../../", "../deps"]}, 
  ...
