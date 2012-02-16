@@ -9,7 +9,7 @@ About
 Dependencies
 ------------
 - Erlang/OTP
-- https://github.com/talentdeficit/jsx
+- redo (https://github.com/JacobVorreuter/redo)
 
 Author
 ------
