@@ -31,6 +31,7 @@ Creating node::
 
 Patching **rel/reltool.config**::
 
+*change*::
  ...
        {lib_dirs, ["../../", "../deps"]}, 
  ...
@@ -47,6 +48,8 @@ Patching **rel/reltool.config**::
        {app, redo,   [{incl_cond, include}]},
        {app, inets,   [{incl_cond, include}]},
   ...
+
+*rel/reltool.config*::
 
  {sys, [
        {lib_dirs, ["../../", "../deps"]},
