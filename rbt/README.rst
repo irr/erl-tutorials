@@ -1,10 +1,10 @@
-===============
-Rebar skeleton
-===============
+=============
+Rebar + Redis
+=============
 
 About
 -----
-* A basic rebar skeleton including inets
+* A basic rebar skeleton using inets and redo as dependencies...
 
 Dependencies
 ------------
