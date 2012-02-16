@@ -161,7 +161,7 @@ Executing **rbt**::
               {modules,[rbt_server]}]...
  ...
 
- [irocha@york rbt (master)]$ curl -v http://localhost:1972/ -d "name=alessandra%20santos&likes=dog";echo
+ [irocha@york rbt (master)]$ curl -v http://localhost:1972/ -d "name=alessandra%20santos&count=100";echo
  * About to connect() to localhost port 1972 (#0)
  *   Trying 127.0.0.1... connected
  * Connected to localhost (127.0.0.1) port 1972 (#0)
@@ -173,14 +173,14 @@ Executing **rbt**::
  > Content-Type: application/x-www-form-urlencoded
  > 
  < HTTP/1.1 200 OK
- < Date: Thu, 16 Feb 2012 12:50:44 GMT
+ < Date: Thu, 16 Feb 2012 05:50:44 GMT
  < Content-Length: 52
  < Content-Type: application/json
  < Server: rbt
  < 
  * Connection #0 to host localhost left intact
  * Closing connection #0
- "{\"name\":\"alessandra santos\",\"likes\":\"dog\"}"
+ "{\"name\":\"alessandra santos\",\"count\":\"100\"}"
 
 Manual start with **shell**::
 
