@@ -12,7 +12,7 @@
          terminate/2, code_change/3, do/1, state/0]).
 
 -define(SERVER, ?MODULE).
--define(CONTENT_TYPE, "plain/text; charset=ISO-8859-1").
+-define(CONTENT_TYPE, "application/json").
 
 %%%===================================================================
 %%% API
@@ -51,8 +51,13 @@ init([]) ->
               {server_name, "rbt"},
               {modules, [rbt_server]}],
     {ok, _} = inets:start(httpd, Config, stand_alone),
-    io:format("RBT started ~p...~n", [Config]),
+    io:format("~nRBT started ~p...~n", [Config]),
+    init_redis(),
     {ok, Config}.
+
+
+init_redis() ->
+    spawn(fun() -> redo:start_link() end).
 
 state() ->
     gen_server:call(?MODULE, state).
@@ -133,11 +138,40 @@ code_change(_OldVsn, State, _Extra) ->
 %%% Internal functions
 %%%===================================================================
 
+exec(_ModData) ->
+    case redo:cmd(["PING"]) of
+        <<"PONG">> ->
+            ok;
+        _ ->
+            error
+    end.
+
 do(ModData) ->
-    Data = ModData#mod.entity_body,
-    Body = lists:flatten(io_lib:fwrite("RBT (data received):~n~p~n",
-                                       [{ModData, Data, state()}])),
-    Head = [{content_length, integer_to_list(length(Body))},
-            {content_type, ?CONTENT_TYPE},
-            {code, 200}],
-    {proceed, [{response, {response, Head, Body}}]}.
+    try exec(ModData) of
+        error ->
+            Head = [{content_length, "0"},
+                    {content_type, ?CONTENT_TYPE},
+                    {server, proplists:get_value(server_name, state())},
+                    {code, 404}],
+            init_redis(),
+            {proceed, [{response, {response, Head, []}}]};
+        _ ->
+            Data = ModData#mod.entity_body,
+            Pairs = [string:tokens(X, "=") || X <- string:tokens(Data, "&")],
+            Struct = {struct, [{list_to_atom(hd(X)), list_to_binary(http_uri:decode(hd(tl(X))))} || X <- Pairs]},
+            Json = iolist_to_binary(mochijson2:encode(Struct)),
+            Body = lists:flatten(io_lib:fwrite("~p", [binary_to_list(Json)])),
+            Head = [{content_length, integer_to_list(length(Body))},
+                    {content_type, ?CONTENT_TYPE},
+                    {server, proplists:get_value(server_name, state())},
+                    {code, 200}],
+            {proceed, [{response, {response, Head, Body}}]}
+    catch
+        _:_ ->
+            Head = [{content_length, "0"},
+                    {content_type, ?CONTENT_TYPE},
+                    {server, proplists:get_value(server_name, state())},
+                    {code, 500}],
+            init_redis(),
+            {proceed, [{response, {response, Head, []}}]}
+    end.
