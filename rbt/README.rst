@@ -40,7 +40,7 @@ Patching **rel/reltool.config**::
          stdlib,
          sasl,
          inets,
-		 redo,
+         redo,
          rbt
         ]},
   ...
@@ -58,7 +58,7 @@ Patching **rel/reltool.config**::
          stdlib,
          sasl,
          inets,
-		 jsx
+         redo,
          rbt
         ]},
        {rel, "start_clean", "",
