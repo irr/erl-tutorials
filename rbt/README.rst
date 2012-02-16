@@ -9,6 +9,7 @@ About
 Dependencies
 ------------
 - Erlang/OTP
+- https://github.com/talentdeficit/jsx
 
 Author
 ------
@@ -30,8 +31,25 @@ Creating node::
 
 Patching **rel/reltool.config**::
 
+ ...
+       {lib_dirs, ["../../", "../deps"]}, 
+ ...
+       {rel, "rbt", "1",
+        [
+         kernel,
+         stdlib,
+         sasl,
+         inets,
+		 redo,
+         rbt
+        ]},
+  ...
+       {app, redo,   [{incl_cond, include}]},
+       {app, inets,   [{incl_cond, include}]},
+  ...
+
  {sys, [
-       {lib_dirs, ["../../"]}, <<<<< changed from []!
+       {lib_dirs, ["../../", "../deps"]},
        {erts, [{mod_cond, derived}, {app_file, strip}]},
        {app_file, strip},
        {rel, "rbt", "1",
@@ -39,7 +57,8 @@ Patching **rel/reltool.config**::
          kernel,
          stdlib,
          sasl,
-         inets, <<<<< added!
+         inets,
+		 jsx
          rbt
         ]},
        {rel, "start_clean", "",
@@ -54,7 +73,8 @@ Patching **rel/reltool.config**::
        {excl_sys_filters, ["^bin/.*", "^erts.*/bin/(dialyzer|typer)",
                            "^erts.*/(doc|info|include|lib|man|src)"]},
        {excl_app_filters, ["\.gitignore"]},
-       {app, inets,   [{incl_cond, include}]}, <<<<< added!
+       {app, redo,   [{incl_cond, include}]},
+       {app, inets,   [{incl_cond, include}]},
        {app, sasl,   [{incl_cond, include}]},
        {app, stdlib, [{incl_cond, include}]},
        {app, kernel, [{incl_cond, include}]},
@@ -89,6 +109,7 @@ Verifying **erts** parameters (**rel/files/vm.args**)::
  ## Enable kernel poll and a few async threads
  +K true
  +A 42
+ +B
 
  ## Increase number of concurrent ports/sockets
  -env ERL_MAX_PORTS 4096
@@ -96,20 +117,34 @@ Verifying **erts** parameters (**rel/files/vm.args**)::
  ## Tweak GC to run more often
  -env ERL_FULLSWEEP_AFTER 10
 
-=======
-Testing
-=======
+========
+Building
+========
 
 From inside **rbt** root directory, type::
 
- [irocha@york rbt (master)]$ ./rebar clean && ./rebar compile && ./rebar generate
+ [irocha@york rbt (master)]$ ./rebar clean && ./rebar get-deps && ./rebar check-deps && ./rebar compile && ./rebar generate
+ ==> redo (clean)
  ==> rel (clean)
  ==> rbt (clean)
+ ==> redo (get-deps)
+ ==> rel (get-deps)
+ ==> rbt (get-deps)
+ ==> redo (check-deps)
+ ==> rel (check-deps)
+ ==> rbt (check-deps)
+ ==> redo (compile)
+ Compiled src/redo_uri.erl
+ Compiled src/redo_redis_proto.erl
+ Compiled src/redo.erl
+ Compiled src/bench.erl
+ Compiled src/redo_concurrency_test.erl
  ==> rel (compile)
  ==> rbt (compile)
- Compiled src/rbt_app.erl
  Compiled src/rbt_sup.erl
+ Compiled src/rbt_app.erl
  Compiled src/rbt_server.erl
+ Compiled src/mochijson2.erl
  ==> rel (generate)
 
 Executing **rbt**::
@@ -126,9 +161,15 @@ Executing **rbt**::
               {server_name,"rbt"},
               {modules,[rbt_server]}]...
  Eshell V5.8.5  (abort with ^G)
- (rbt@127.0.0.1)1> 
+ (rbt@127.0.0.1)1> application:which_applications().
+ [{sasl,"SASL  CXC 138 11","2.1.10"},
+  {inets,"INETS  CXC 138 49","5.7.1"},
+  {redo,"Pipelined Redis Erlang Driver","1.0"},
+  {rbt,[],"1"},
+  {stdlib,"ERTS  CXC 138 10","1.17.5"},
+  {kernel,"ERTS  CXC 138 10","2.14.5"}]
 
- [irocha@york rbt (master)]$ curl -v http://localhost:1972/ -d "data=ale%20&%20ivan";echo
+ [irocha@york rbt (master)]$ curl -v http://localhost:1972/ -d "data=ale%20%26%20ivan";echo
  * About to connect() to localhost port 1972 (#0)
  *   Trying 127.0.0.1... connected
  * Connected to localhost (127.0.0.1) port 1972 (#0)
@@ -156,7 +197,7 @@ Executing **rbt**::
        {"user-agent",
         "curl/7.21.7 (x86_64-redhat-linux-gnu) libcurl/7.21.7 NSS/3.13.1.0 zlib/1.2.5 libidn/1.22 libssh2/1.2.7"}],
       "data=ale%20&%20ivan",true},
- "data=ale%20&%20ivan",
+ "data=ale%20%26%20ivan",
  [{port,1972},
   {server_root,"/tmp"},
   {document_root,"/tmp"},
@@ -168,7 +209,7 @@ Executing **rbt**::
 
 Manual start with **shell**::
 
- [irocha@york rbt (master)]$ erl -pa ebin +K true +A 42 +B -s inets start -s rbt_app start
+ [irocha@york rbt (master)]$ erl -pa ebin -pa deps/*/ebin +K true +A 42 +B -s inets start -s rbt_app start
  Erlang R14B04 (erts-5.8.5) [source] [64-bit] [smp:4:4] [rq:4] [async-threads:42] [hipe] [kernel-poll:true]
 
  Eshell V5.8.5  (abort with ^G)
