@@ -29,7 +29,7 @@ Creating node::
  cd rel
  ../rebar create-node nodeid=rbt
 
-Patching **rel/reltool.config**::
+Patching **rel/reltool.config**:
 
 *change*::
 
