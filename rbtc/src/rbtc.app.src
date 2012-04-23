@@ -1,0 +1,13 @@
+{application, rbtc,
+ [
+  {description, ""},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib,
+                  cowboy
+                 ]},
+  {mod, { rbtc_app, []}},
+  {env, []}
+ ]}.
