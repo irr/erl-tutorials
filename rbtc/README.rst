@@ -214,7 +214,7 @@ Executing **rbtc**::
 
 Manual start with **shell**::
 
- [irocha@york rbtc (master)]$ erl -pa ebin -pa deps/*/ebin +K true +A 42 +B -s rbtc_app
+ [irocha@york rbtc (master)]$ erl -boot start_sasl -pa ebin -pa deps/*/ebin +K true +A 42 +B -s rbtc_app
  Erlang R15B01 (erts-5.9.1) [source] [64-bit] [smp:4:4] [async-threads:42] [hipe] [kernel-poll:true]
 
  Eshell V5.9.1  (abort with ^G)
