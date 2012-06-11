@@ -188,7 +188,7 @@ Executing **rbt**::
 
 Manual start with **shell**::
 
- [irocha@york rbt (master)]$ erl -pa ebin -pa deps/*/ebin +K true +A 42 +B -s inets start -s rbt_app start
+ [irocha@york rbt (master)]$ erl -boot start_sasl -pa ebin -pa deps/*/ebin +K true +A 42 +B -s inets start -s rbt_app start
  Erlang R14B04 (erts-5.8.5) [source] [64-bit] [smp:4:4] [rq:4] [async-threads:42] [hipe] [kernel-poll:true]
 
  Eshell V5.8.5  (abort with ^G)
