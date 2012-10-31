@@ -1,0 +1,6 @@
+CREATE TABLE symbols (S TEXT NOT NULL, D TEXT NOT NULL, O REAL NOT NULL, H REAL NOT NULL, L REAL NOT NULL, C REAL NOT NULL, V REAL NOT NULL);
+CREATE INDEX symbols_idx01 ON symbols (S);
+CREATE INDEX symbols_idx02 ON symbols (S, D);
+CREATE INDEX symbols_idx03 ON symbols (D);
+.separator ','
+.import symbols.csv symbols
