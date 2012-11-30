@@ -53,24 +53,16 @@ Ivan Ribeiro Rocha <ivan.ribeiro@gmail.com>
 
 Copyright and License
 ---------------------
+Copyright 2012 Ivan Ribeiro Rocha
 
-`BOLA - Buena Onda License Agreement (v1.1) <http://blitiri.com.ar/p/bola/>`_ 
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-This work is provided 'as-is', without any express or implied warranty. In no
-event will the authors be held liable for any damages arising from the use of
-this work.
+   http://www.apache.org/licenses/LICENSE-2.0
 
-To all effects and purposes, this work is to be considered Public Domain.
-
-However, if you want to be "buena onda", you should:
-
-1. Not take credit for it, and give proper recognition to the authors.
-2. Share your modifications, so everybody benefits from them.
-3. Do something nice for the authors.
-4. Help someone who needs it: sign up for some volunteer work or help your
-   neighbour paint the house.
-5. Don't waste. Anything, but specially energy that comes from natural
-   non-renewable resources. Extra points if you discover or invent something
-   to replace them.
-6. Be tolerant. Everything that's good in nature comes from cooperation.
-
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
