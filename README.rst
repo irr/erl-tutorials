@@ -9,10 +9,14 @@ About
 Setup
 -----
 
-Dependencies::
+Dependencies:
 
-  sudo yum install make gcc gcc-c++ kernel-devel m4 java-1.7.0-openjdk-devel
-  sudo yum install freeglut-devel wxGTK-devel openssl-devel unixODBC-devel ncurses-devel tk fop
+  CentOS::
+    sudo yum install make gcc gcc-c++ kernel-devel m4 java-1.7.0-openjdk-devel
+    sudo yum install freeglut-devel wxGTK-devel openssl-devel unixODBC-devel ncurses-devel tk fop
+
+  Ubuntu::
+    sudo apt-get install freeglut3-dev libwxgtk2.8-dev g++ libssl-dev unixodbc-dev tk8.5 libncurses5-dev fop xsltproc
 
 Compilation::
 
