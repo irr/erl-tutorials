@@ -13,6 +13,9 @@ Dependencies::
 
   sudo yum install make gcc gcc-c++ kernel-devel m4 java-1.7.0-openjdk-devel
   sudo yum install freeglut-devel wxGTK-devel openssl-devel unixODBC-devel ncurses-devel tk fop
+
+Compilation::
+
   ./configure --enable-threads --enable-smp-support --enable-kernel-poll --disable-hipe --with-ssl --enable-halfword-emulator
 
 
