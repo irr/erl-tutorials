@@ -6,6 +6,16 @@ About
 -----
 **erl-tutorials** is a set of sample codes whose main purpose is to teach and guide various aspects of *erlang programming*... 
 
+Setup
+-----
+
+Dependencies::
+
+  sudo yum install make gcc gcc-c++ kernel-devel m4 java-1.7.0-openjdk-devel
+  sudo yum install freeglut-devel wxGTK-devel openssl-devel unixODBC-devel ncurses-devel tk fop
+  ./configure --enable-threads --enable-smp-support --enable-kernel-poll --disable-hipe --with-ssl --enable-halfword-emulator
+
+
 ========
 Projects
 ========
