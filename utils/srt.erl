@@ -23,7 +23,7 @@ process(_File, Charset, []) ->
     throw(io:format("Invalid encoding [~p]\n", [Charset]));
 
 process(File, Charset, _) ->    
-    Content = os:cmd("iconv -f " ++ Charset ++ " -t ISO885915//TRANSLIT " ++ File),
+    Content = os:cmd("iconv -f " ++ Charset ++ " -t UTF-8//TRANSLIT " ++ File),
     Srt = re:replace(Content, "<.*?i>|<.*?b>|<.*?u>", "", [global, caseless, {return,list}]),
     ok = file:write_file(File, Srt).
     
