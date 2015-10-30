@@ -1,3 +1,4 @@
 ebin/*.beam
 .rebar
+deps
 
