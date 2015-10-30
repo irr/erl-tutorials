@@ -16,8 +16,12 @@ start_link() ->
     gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
 init(_Args) ->
-    {ok, Redis} = eredis:start_link(),
-    {ok, #{channels => [], redis => Redis}}.
+    N = 10,
+    L = lists:map(fun(X) -> 
+                      {ok, R} = eredis:start_link(),
+                      {X, R}
+                  end, lists:seq(0, N - 1)),
+    {ok, #{channels => [], redis => maps:from_list(L), n => N}}.
 
 alloc(Channel) ->
     gen_server:call(?MODULE, {alloc, Channel}).
@@ -34,7 +38,11 @@ redis() ->
 handle_call({alloc, Ch}, _From, #{channels := Chs} = State) ->
     Chs_new = [Ch | Chs],
     {reply, ok, State#{channels := Chs_new}};
-handle_call({redis}, _From, #{redis := C} = State) ->
+handle_call({redis}, From, #{redis := M, n := N} = State) ->
+    H = erlang:phash2(From),
+    I = H rem N,
+    C = maps:get(I, M),
+    io:format("hash ~p => ~p => ~p~n", [From, H, I]), 
     R = eredis:q(C, ["PING"]),
     io:format("redis ping: ~p~n", [R]),
     {reply, ok, State}.
