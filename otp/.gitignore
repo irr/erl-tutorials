@@ -1,4 +1,4 @@
-ebin/*.beam
-.rebar
 deps
+ebin
+.rebar
 
