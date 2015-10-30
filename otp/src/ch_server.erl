@@ -42,9 +42,8 @@ handle_call({redis}, From, #{redis := M, n := N} = State) ->
     H = erlang:phash2(From),
     I = H rem N,
     C = maps:get(I, M),
-    io:format("hash ~p => ~p => ~p~n", [From, H, I]), 
     R = eredis:q(C, ["PING"]),
-    io:format("redis ping: ~p~n", [R]),
+    io:format("hash ~p => ~p => ~p [~p]~n", [From, H, I, R]), 
     {reply, ok, State}.
 
 handle_cast({show}, State) ->
