@@ -7,6 +7,7 @@ from_shell() ->
     % rebar compile
     % erl -pa ebin/ -pa deps/*/ebin -run ch_app from_shell
     application:ensure_all_started(?MODULE),
+    io:format("~nch_server:show().~n", []),
     io:format("~nch_server:redis().~n", []),
     io:format("~nlists:foreach(fun(_) -> spawn(ch_server, redis, []) end, lists:seq(1, 5)).~n", []),
     ch_server:redis().

@@ -13,10 +13,10 @@
 -define(TIMEOUT, 1000).
 
 start_link() ->
-    gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
+    gen_server:start_link({local, ?MODULE}, ?MODULE, [10], []).
 
-init(_Args) ->
-    N = 10,
+init(Args) ->
+    [N | _] = Args,
     L = lists:map(fun(X) -> 
                       {ok, R} = eredis:start_link(),
                       {X, R}
