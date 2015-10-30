@@ -2,7 +2,7 @@
 -behaviour(gen_server).
 
 -export([start_link/0]).
--export([alloc/1, free/1, show/0]).
+-export([alloc/1, free/1, show/0, redis/0]).
 -export([init/1, 
          handle_call/3,
          handle_cast/2,
@@ -16,10 +16,11 @@ start_link() ->
     gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
 init(_Args) ->
-    {ok, #{channels => []}}.
+    {ok, Redis} = eredis:start_link(),
+    {ok, #{channels => [], redis => Redis}}.
 
 alloc(Channel) ->
-    gen_server:call(?MODULE, {alloc, Channel}, ?TIMEOUT).
+    gen_server:call(?MODULE, {alloc, Channel}).
 
 show() ->
     gen_server:cast(?MODULE, {show}).
@@ -27,9 +28,16 @@ show() ->
 free(Ch) ->
     gen_server:cast(?MODULE, {free, Ch}).
 
+redis() ->
+    gen_server:call(?MODULE, {redis}, ?TIMEOUT).
+
 handle_call({alloc, Ch}, _From, #{channels := Chs} = State) ->
     Chs_new = [Ch | Chs],
-    {reply, ok, State#{channels => Chs_new}}.
+    {reply, ok, State#{channels := Chs_new}};
+handle_call({redis}, _From, #{redis := C} = State) ->
+    R = eredis:q(C, ["PING"]),
+    io:format("redis ping: ~p~n", [R]),
+    {reply, ok, State}.
 
 handle_cast({show}, State) ->
     io:format("state: ~p~n", [State]),
@@ -40,7 +48,7 @@ handle_cast({free, Ch}, #{channels := Chs} = State) ->
                               true -> true
                            end
                        end, Chs),
-    {noreply, State#{channels => Chs2}}.
+    {noreply, State#{channels := Chs2}}.
 
 handle_info(_Info, State) ->
     {noreply, State}.
