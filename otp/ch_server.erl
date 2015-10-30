@@ -1,4 +1,4 @@
--module(ch3).
+-module(ch_server).
 -behaviour(gen_server).
 
 -export([start_link/0]).
@@ -11,22 +11,23 @@
          code_change/3]).
 
 start_link() ->
-    gen_server:start_link({local, ch3}, ch3, [], []).
+    gen_server:start_link({local, ch_server}, ch_server, [], []).
 
 init(_Args) ->
     {ok, #{channels => []}}.
 
 alloc(Channel) ->
-    gen_server:call(ch3, {alloc, Channel}).
+    gen_server:call(ch_server, {alloc, Channel}, 1000).
 
 show() ->
-    gen_server:cast(ch3, {show}).
+    gen_server:cast(ch_server, {show}).
 
 free(Ch) ->
-    gen_server:cast(ch3, {free, Ch}).
+    gen_server:cast(ch_server, {free, Ch}).
 
 handle_call({alloc, Ch}, _From, #{channels := Chs} = State) ->
     Chs_new = [Ch | Chs],
+    timer:sleep(2000),
     {reply, ok, State#{channels => Chs_new}}.
 
 handle_cast({show}, State) ->

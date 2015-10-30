@@ -9,11 +9,11 @@ start_link() ->
 
 init(_Args) ->
     SupFlags = #{strategy => one_for_all, intensity => 5, period => 3},
-    ChildSpecs = [#{id => ch3,
-                    start => {ch3, start_link, []},
+    ChildSpecs = [#{id => ch_server,
+                    start => {ch_server, start_link, []},
                     restart => permanent,
                     shutdown => brutal_kill,
                     type => worker,
-                    modules => [cg3]}],
+                    modules => [ch_server]}],
     {ok, {SupFlags, ChildSpecs}}.
 
