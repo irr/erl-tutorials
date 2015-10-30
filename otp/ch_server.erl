@@ -10,24 +10,25 @@
          terminate/2,
          code_change/3]).
 
+-define(TIMEOUT, 1000).
+
 start_link() ->
-    gen_server:start_link({local, ch_server}, ch_server, [], []).
+    gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
 init(_Args) ->
     {ok, #{channels => []}}.
 
 alloc(Channel) ->
-    gen_server:call(ch_server, {alloc, Channel}, 1000).
+    gen_server:call(?MODULE, {alloc, Channel}, ?TIMEOUT).
 
 show() ->
-    gen_server:cast(ch_server, {show}).
+    gen_server:cast(?MODULE, {show}).
 
 free(Ch) ->
-    gen_server:cast(ch_server, {free, Ch}).
+    gen_server:cast(?MODULE, {free, Ch}).
 
 handle_call({alloc, Ch}, _From, #{channels := Chs} = State) ->
     Chs_new = [Ch | Chs],
-    timer:sleep(2000),
     {reply, ok, State#{channels => Chs_new}}.
 
 handle_cast({show}, State) ->
