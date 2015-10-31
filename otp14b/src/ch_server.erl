@@ -21,7 +21,7 @@ init(Args) ->
                       {ok, R} = eredis:start_link(),
                       {X, R}
                   end, lists:seq(0, N - 1)),
-    {ok, dict:from_list([{channels, []}, {redis, dict:from_list(L)}, {n, N}])}.
+    {ok, dict:from_list([{channels, []}, {redis, dict:from_list(L)}, {n, N}, {i, -1}])}.
 
 alloc(Channel) ->
     gen_server:call(?MODULE, {alloc, Channel}).
@@ -35,19 +35,23 @@ free(Ch) ->
 redis() ->
     gen_server:call(?MODULE, {redis}, ?TIMEOUT).
 
+get_redis_state(State) ->
+    {ok, M} = dict:find(redis, State),
+    {ok, N} = dict:find(n, State),
+    {ok, I} = dict:find(i, State),
+    P = (I + 1) rem N,
+    {ok, C} = dict:find(P, M),
+    {P, C}.
+
 handle_call({alloc, Ch}, _From, State) ->
     {ok, Chs} = dict:find(channels, State),
     Chs_new = [Ch | Chs],
     {reply, ok, dict:update(channels, fun(_) -> Chs_new end, State)};
 handle_call({redis}, From, State) ->
-    {ok, M} = dict:find(redis, State),
-    {ok, N} = dict:find(n, State),
-    H = erlang:phash2(From),
-    I = H rem N,
-    {ok, C} = dict:find(I, M),
+    {P, C} = get_redis_state(State),
     R = eredis:q(C, ["PING"]),
-    io:format("hash ~p => ~p => ~p [~p]~n", [From, H, I, R]), 
-    {reply, ok, State}.
+    io:format("hash ~p => ~p [~p]~n", [From, P, R]), 
+    {reply, ok, dict:update(i, fun(_) -> P end, State)}.
 
 handle_cast({show}, State) ->
     io:format("state: ~p~n", [State]),
