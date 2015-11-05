@@ -2,9 +2,9 @@
 
 (set-language-environment "utf-8")
 
-(setq load-path (cons "/usr/lib/erlang/lib/tools-2.8.1/emacs" load-path))
-(setq erlang-root-dir "/usr/lib/erlang")
-(setq exec-path (cons "/usr/lib/erlang/bin" exec-path))
+(setq load-path (cons "/usr/lib64/erlang/lib/tools-2.8.1/emacs" load-path))
+(setq erlang-root-dir "/usr/lib64/erlang")
+(setq exec-path (cons "/usr/lib64/erlang/bin" exec-path))
 (require 'erlang-start)
 
 (require 'cua-base)
@@ -71,4 +71,4 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 113 :width normal :foundry "unknown" :family "Monaco")))))
+ '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 113 :width normal :foundry "unknown" :family "Droid Sans Mono")))))
