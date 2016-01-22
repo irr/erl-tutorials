@@ -28,17 +28,16 @@ main([File]) when is_list(File) ->
 
 main([File, Repair]) when is_list(File),
                           is_list(Repair) ->
-    process(File, Repair =:= "true");
+    process(File, list_to_atom(Repair));
 
 main(_) ->
     usage().
 
 usage() ->
-    io:format("usage: escript dump.erl <file> [repair]\n"),
+    io:format("usage: escript dump.erl <file> [repair: true|false|force]\n"),
     halt(1).
 
 process(File, Repair) ->
-   {ok, N} = dets:open_file(schema, [{file, File},{repair, Repair}, {keypos, 2}]),
-   F = fun(X) -> io:format("~p~n", [X]), continue end,
-   dets:traverse(N, F),
+   {ok, N} = dets:open_file(schema, [{file, File}, {repair, Repair}, {keypos, 2}]),
+   dets:traverse(N, fun(X) -> io:format("~p~n", [X]), continue end),
    dets:close(N).
