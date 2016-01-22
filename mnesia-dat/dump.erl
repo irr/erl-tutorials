@@ -4,6 +4,8 @@
 
 create_test() ->
     Nodes=[node()],
+    stopped = mnesia:stop(),
+    mnesia:delete_schema(Nodes),
     mnesia:create_schema(Nodes),
     mnesia:start(),
     mnesia:create_table(test, [{frag_properties,
@@ -18,10 +20,12 @@ create_test() ->
                 mnesia:write({test, Key, Val})
             end, [{X, X * 1000}],
         mnesia_frag) end, lists:seq(1, 1000)),
-    mnesia:activity(transaction,
+    S = mnesia:activity(transaction,
         fun() ->
             mnesia:table_info(test, size)
-        end, [], mnesia_frag).
+        end, [], mnesia_frag),
+    io:format("~nmnesia info:~n~p~n~p objects created.~n", [mnesia:system_info(all), S]),
+    stopped = mnesia:stop().
 
 main([File]) when is_list(File) ->
     process(File, false);
