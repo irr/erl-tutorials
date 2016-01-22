@@ -24,17 +24,21 @@ create_test() ->
         end, [], mnesia_frag).
 
 main([File]) when is_list(File) ->
-    process(File);
+    process(File, false);
+
+main([File, Repair]) when is_list(File),
+                          is_list(Repair) ->
+    process(File, Repair =:= "true");
 
 main(_) ->
     usage().
 
 usage() ->
-    io:format("usage: escript dump.erl <file>\n"),
+    io:format("usage: escript dump.erl <file> [repair]\n"),
     halt(1).
 
-process(File) ->
-   {ok, N} = dets:open_file(schema, [{file, File},{repair,false}, {keypos, 2}]),
+process(File, Repair) ->
+   {ok, N} = dets:open_file(schema, [{file, File},{repair, Repair}, {keypos, 2}]),
    F = fun(X) -> io:format("~p~n", [X]), continue end,
    dets:traverse(N, F),
    dets:close(N).
