@@ -2,6 +2,8 @@
 -author("ivan.ribeiro@gmail.com").
 -compile(export_all).
 
+%% erl +B -pa ~/git/cqerl/ebin ~/git/cqerl/deps/*/ebin
+
 setup() ->
     ok = application:start(crypto),
     ok = application:start(asn1),
