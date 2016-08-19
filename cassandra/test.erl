@@ -17,12 +17,16 @@ setup() ->
     ok = application:start(quickrand),
     ok = application:start(uuid),
     ok = application:start(cqerl).
-
+%% (list-comp ((<- x '(crypto asn1 public_key ssl pooler re2 semver snappy lz4 quickrand uuid cqerl))) (application:start x))
+%%
 exec(Client) ->
+    %% (set (tuple ok Result) (cqerl:run_query Client (binary "SELECT * FROM rt_series;")))
     {ok, Result} = cqerl:run_query(Client, <<"SELECT * FROM rt_series;">>),
     print(Result).
 
 run() ->
+    %% (set (tuple ok Client) (cqerl:get_client "127.0.0.1:9042" (list (tuple 'keyspace "irr"))))
+    %% (set (tuple ok Client) (cqerl:get_client "127.0.0.1:9042" '(#(keyspace "irr"))))
     {ok, Client} = cqerl:get_client("127.0.0.1:9042", [{keyspace, 'irr'}]),
     exec(Client).
 
