@@ -18,11 +18,18 @@ setup() ->
     ok = application:start(uuid),
     ok = application:start(cqerl).
 
+exec(Client) ->
+    {ok, Result} = cqerl:run_query(Client, <<"SELECT * FROM rt_series;">>),
+    print(Result).
+
 run() ->
     {ok, Client} = cqerl:get_client("127.0.0.1:9042", [{keyspace, 'irr'}]),
-    {ok, Result} = cqerl:run_query(Client, <<"SELECT * FROM rt_series;">>),
-    cqerl:close_client(Client),
-    print(Result).
+    exec(Client).
+
+run_cluster() ->
+    cqerl_cluster:add_nodes([{ "127.0.0.1", 9042}], [{keyspace, 'irr'}]),
+    {ok, Client} = cqerl_cluster:get_any_client(),
+    exec(Client).
    
 print_next(empty_dataset) ->
     ok;
