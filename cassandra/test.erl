@@ -3,6 +3,7 @@
 -compile(export_all).
 
 %% erl +B -pa ~/git/cqerl/ebin ~/git/cqerl/deps/*/ebin
+%% lfe +B -pa ~/git/cqerl/ebin ~/git/cqerl/deps/*/ebin
 
 setup() ->
     ok = application:start(crypto),
