@@ -1,3 +1,5 @@
+;; lfe +B -pa ~/git/cqerl/ebin ~/git/cqerl/deps/*/ebin
+
 (defmodule test
   (export (setup 0) (run 0)))
 
@@ -8,7 +10,7 @@
     (list-comp ((<- x '(crypto asn1 public_key ssl pooler re2 semver snappy lz4 quickrand uuid cqerl)))
         (application:start x)))
 
-(defun exec 
+(defun exec
     (((tuple 'ok Client)) (show (cqerl:run_query Client (binary "SELECT * FROM rt_series;")))))
 
 (defun run ()
